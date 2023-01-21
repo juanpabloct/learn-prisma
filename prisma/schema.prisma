@@ -11,13 +11,20 @@ datasource db {
 }
 
 model Usuario {
-  id       Int    @id @default(autoincrement())
-  email    String @db.VarChar()
-  password String
+  id                 Int          @id @default(autoincrement())
+  email              String       @unique @db.VarChar()
+  password           String
+  informationUsuario Information? @relation("information")
+  updateAt           DateTime     @updatedAt
+  createAt           DateTime     @default(now())
 }
 
 model Information {
-  id       Int    @id @default(autoincrement())
-  name     String
-  lastName String
+  id        Int      @id @default(autoincrement())
+  name      String
+  lastName  String
+  user      Usuario  @relation("information", fields: [usuarioId], references: [id])
+  usuarioId Int      @unique
+  updateAt  DateTime @updatedAt
+  createAt  DateTime @default(now())
 }
